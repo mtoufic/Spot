@@ -53,6 +53,18 @@
       color: inherit;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .page {
       width: 100%;
       max-width: 760px;
@@ -137,16 +149,59 @@
     }
 
     .card {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
       padding: 24px 20px;
       border: 1px solid var(--border);
       border-radius: 24px;
       background: linear-gradient(180deg, var(--card-strong) 0%, var(--card) 100%);
       box-shadow: var(--shadow);
       text-align: center;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
 
     .hero-card {
       padding: 28px 22px;
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card::before {
+      inset: auto -15% -38% 40%;
+      height: 180px;
+      background: radial-gradient(circle, rgba(198, 142, 5, 0.2) 0%, rgba(198, 142, 5, 0) 72%);
+      filter: blur(6px);
+    }
+
+    .card::after {
+      top: -45%;
+      left: -55%;
+      width: 44%;
+      height: 190%;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+      transform: rotate(18deg);
+      opacity: 0;
+      transition: opacity 280ms ease, transform 280ms ease;
+    }
+
+    .card:hover,
+    .card:focus-within {
+      transform: translateY(-4px);
+      border-color: rgba(198, 142, 5, 0.56);
+      box-shadow: 0 26px 54px rgba(0, 0, 0, 0.32);
+    }
+
+    .card:hover::after,
+    .card:focus-within::after {
+      opacity: 0.65;
+      transform: translateX(180%) rotate(18deg);
     }
 
     .platform {
@@ -159,20 +214,89 @@
 
     .platform-heading {
       text-align: left;
+      position: relative;
+      z-index: 1;
     }
 
-    .icon {
-      width: 56px;
-      height: 56px;
+    .brand-badge {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
       flex: 0 0 auto;
-      background: #fff;
-      color: var(--navy);
-      font-size: 23px;
-      font-weight: 700;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .brand-badge::before,
+    .brand-badge::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .brand-badge::before {
+      inset: -12px;
+      background: radial-gradient(circle, rgba(198, 142, 5, 0.22) 0%, rgba(198, 142, 5, 0) 72%);
+      filter: blur(12px);
+      animation: haloPulse 4.4s ease-in-out infinite;
+    }
+
+    .brand-badge::after {
+      inset: -8px;
+      border: 1px solid rgba(198, 142, 5, 0.28);
+      opacity: 0.95;
+      animation: orbitRing 10s linear infinite;
+    }
+
+    .brand-badge img {
+      position: relative;
+      z-index: 1;
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      animation: logoFloat 5.6s ease-in-out infinite;
+    }
+
+    .brand-badge--google,
+    .brand-badge--tripadvisor {
+      width: 94px;
+      height: 94px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
+    }
+
+    .brand-badge--google img {
+      width: 52px;
+      height: 52px;
+    }
+
+    .brand-badge--tripadvisor img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+    }
+
+    .brand-badge--menu {
+      width: 96px;
+      height: 96px;
+      background: radial-gradient(circle at 34% 28%, #173777 0%, #102760 56%, #0b1c44 100%);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    .brand-badge--menu::after {
+      inset: -7px;
+      border: 1px solid rgba(198, 142, 5, 0.42);
+    }
+
+    .brand-badge--menu img {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(198, 142, 5, 0.2);
     }
 
     .card h2 {
@@ -182,6 +306,8 @@
       font-weight: 700;
       letter-spacing: 1.8px;
       text-transform: uppercase;
+      position: relative;
+      z-index: 1;
     }
 
     .stars {
@@ -196,6 +322,8 @@
       color: var(--gray-soft);
       font-size: 14px;
       line-height: 1.7;
+      position: relative;
+      z-index: 1;
     }
 
     .cta-stack {
@@ -217,7 +345,9 @@
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+      position: relative;
+      z-index: 1;
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease, filter 160ms ease;
     }
 
     .btn:hover,
@@ -237,6 +367,12 @@
       box-shadow: 0 14px 30px rgba(198, 142, 5, 0.24);
     }
 
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      filter: brightness(1.04);
+      box-shadow: 0 18px 34px rgba(198, 142, 5, 0.3);
+    }
+
     .text-link {
       align-self: center;
       color: var(--gray-soft);
@@ -244,6 +380,8 @@
       line-height: 1.4;
       text-decoration: underline;
       text-underline-offset: 4px;
+      position: relative;
+      z-index: 1;
     }
 
     .feedback-link {
@@ -257,6 +395,8 @@
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.5px;
+      position: relative;
+      z-index: 1;
     }
 
     .support-grid {
@@ -277,12 +417,42 @@
       margin: 0 auto;
     }
 
+    .secondary-card .cta-stack {
+      max-width: 310px;
+      margin-top: 20px;
+    }
+
+    .brand-wordmark-shell {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      margin: 0 auto 18px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand-wordmark {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .brand-wordmark--tripadvisor {
+      width: 168px;
+    }
+
     .link-list {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px 18px;
       margin-top: 18px;
+      position: relative;
+      z-index: 1;
     }
 
     .link-list a {
@@ -350,6 +520,147 @@
       opacity: 0.6;
     }
 
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px) scale(0.985);
+      animation: riseIn 760ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .reveal-1 {
+      animation-delay: 60ms;
+    }
+
+    .reveal-2 {
+      animation-delay: 140ms;
+    }
+
+    .reveal-3 {
+      animation-delay: 230ms;
+    }
+
+    .reveal-4 {
+      animation-delay: 320ms;
+    }
+
+    .reveal-5 {
+      animation-delay: 410ms;
+    }
+
+    .motion-copy {
+      animation: copyFloat 6.2s ease-in-out infinite;
+    }
+
+    .motion-heading {
+      animation: headingFloat 5.8s ease-in-out infinite;
+    }
+
+    .motion-wordmark {
+      animation: wordmarkFloat 6.4s ease-in-out infinite;
+    }
+
+    .motion-note {
+      animation: noteGlow 4.8s ease-in-out infinite;
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.985);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes logoFloat {
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-6px) scale(1.02);
+      }
+    }
+
+    @keyframes haloPulse {
+      0%,
+      100% {
+        opacity: 0.6;
+        transform: scale(0.98);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes orbitRing {
+      from {
+        transform: rotate(0deg) scale(1);
+      }
+
+      50% {
+        transform: rotate(180deg) scale(1.03);
+      }
+
+      to {
+        transform: rotate(360deg) scale(1);
+      }
+    }
+
+    @keyframes copyFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.88;
+      }
+
+      50% {
+        transform: translateY(-3px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes headingFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+        text-shadow: 0 0 0 rgba(198, 142, 5, 0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+        text-shadow: 0 8px 18px rgba(198, 142, 5, 0.16);
+      }
+    }
+
+    @keyframes wordmarkFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes noteGlow {
+      0%,
+      100% {
+        opacity: 0.9;
+      }
+
+      50% {
+        opacity: 1;
+        text-shadow: 0 0 18px rgba(198, 142, 5, 0.22);
+      }
+    }
+
     @keyframes pulseGlow {
       0%,
       100% {
@@ -402,6 +713,22 @@
         text-align: center;
       }
 
+      .brand-badge--google,
+      .brand-badge--tripadvisor,
+      .brand-badge--menu {
+        width: 88px;
+        height: 88px;
+      }
+
+      .brand-badge--tripadvisor img {
+        width: 68px;
+        height: 68px;
+      }
+
+      .brand-wordmark--tripadvisor {
+        width: 150px;
+      }
+
       .btn-primary {
         min-height: 54px;
         font-size: 11px;
@@ -415,15 +742,31 @@
         transition: none;
       }
 
+      .card,
+      .card::before,
+      .card::after,
+      .reveal,
+      .motion-copy,
+      .motion-heading,
+      .motion-wordmark,
+      .motion-note,
+      .brand-badge::before,
+      .brand-badge::after,
+      .brand-badge img,
       .review-cta {
         animation: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
       }
     }
   </style>
 </head>
 <body class="lang-sv">
   <div class="page">
-    <div class="topbar">
+    <div class="topbar reveal reveal-1">
       <div class="lang-toggle">
         <button type="button" aria-label="Switch language" onclick="toggleLang()">
           <span class="sv">EN</span>
@@ -432,7 +775,7 @@
       </div>
     </div>
 
-    <header>
+    <header class="reveal reveal-1">
       <img
         class="logo"
         src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
@@ -442,7 +785,7 @@
         <span class="sv">Restaurang</span>
         <span class="en">Restaurant</span>
       </div>
-      <h1>SPOT</h1>
+      <h1 class="motion-heading">SPOT</h1>
       <p class="subtitle">
         <span class="sv">Vedugnsbakad pizza &amp; italienskt kok i hjartat av Malmo.</span>
         <span class="en">Wood-fired pizza &amp; Italian cuisine in the heart of Malmo.</span>
@@ -450,15 +793,21 @@
     </header>
 
     <main>
-      <section class="card hero-card">
+      <section class="card hero-card reveal reveal-2">
         <div class="platform">
-          <div class="icon" aria-hidden="true">G</div>
+          <div class="brand-badge brand-badge--google" aria-hidden="true">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+              alt=""
+              loading="lazy"
+            >
+          </div>
           <div class="platform-heading">
-            <div class="eyebrow">
+            <div class="eyebrow motion-copy">
               <span class="sv">Dela din upplevelse</span>
               <span class="en">Share your visit</span>
             </div>
-            <h2>Google</h2>
+            <h2 class="motion-heading">Google</h2>
           </div>
         </div>
         <div class="stars" aria-label="Decorative stars">★★★★★</div>
@@ -490,22 +839,36 @@
             <span class="en">Private feedback</span>
           </a>
         </div>
-        <p class="helper-note">
+        <p class="helper-note motion-note">
           <span class="sv">Tar bara runt 30 sekunder.</span>
           <span class="en">Takes about 30 seconds.</span>
         </p>
       </section>
 
       <div class="support-grid">
-        <section class="card secondary-card">
-          <div class="icon" aria-hidden="true">TA</div>
-          <h2>TripAdvisor</h2>
+        <section class="card secondary-card reveal reveal-3">
+          <div class="brand-badge brand-badge--tripadvisor" aria-hidden="true">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/9/94/Tripadvisor-logo-circle-owl-icon-black-green.svg"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+          <div class="brand-wordmark-shell">
+            <img
+              class="brand-wordmark brand-wordmark--tripadvisor motion-wordmark"
+              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Tripadvisor%202025%20Logo.svg"
+              alt="Tripadvisor"
+              loading="lazy"
+            >
+          </div>
           <p>
-            <span class="sv">Foredrar du TripAdvisor? Du kan fortfarande skriva eller lasa recensioner dar ocksa.</span>
-            <span class="en">Prefer TripAdvisor? You can still write or read reviews there as well.</span>
+            <span class="sv">Foredrar du Tripadvisor? Du kan fortfarande skriva eller lasa recensioner dar ocksa.</span>
+            <span class="en">Prefer Tripadvisor? You can still write or read reviews there as well.</span>
           </p>
-          <div class="link-list">
+          <div class="cta-stack">
             <a
+              class="btn btn-primary review-cta"
               target="_blank"
               rel="noopener"
               href="https://www.tripadvisor.com/UserReviewEdit-g189839-d947846-Spot-Malmo_Skane_County.html"
@@ -514,6 +877,7 @@
               <span class="en">Write a Review</span>
             </a>
             <a
+              class="text-link"
               target="_blank"
               rel="noopener"
               href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html"
@@ -522,11 +886,21 @@
               <span class="en">Read Reviews</span>
             </a>
           </div>
+          <p class="helper-note motion-note">
+            <span class="sv">Tar cirka 40 sekunder.</span>
+            <span class="en">Takes about 40 seconds.</span>
+          </p>
         </section>
 
-        <section class="card menu-card">
-          <div class="icon" aria-hidden="true">☰</div>
-          <h2>
+        <section class="card menu-card reveal reveal-4">
+          <div class="brand-badge brand-badge--menu" aria-hidden="true">
+            <img
+              src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
+              alt=""
+              loading="lazy"
+            >
+          </div>
+          <h2 class="motion-heading">
             <span class="sv">Var meny</span>
             <span class="en">Our Menu</span>
           </h2>
@@ -542,7 +916,7 @@
       </div>
     </main>
 
-    <footer>
+    <footer class="reveal reveal-5">
       <div class="addr">Stora Nygatan 33, 211 37 Malmo<br>040-12 02 03 · info@spotrestaurang.se</div>
       <div class="social">
         <a href="https://www.instagram.com/restaurangspot/" title="Instagram" target="_blank" rel="noopener">IG</a>
