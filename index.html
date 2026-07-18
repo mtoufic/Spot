@@ -104,6 +104,16 @@ transition:transform .15s ease;
 .btn-solid{ background:var(--gold); color:var(--navy); }
 .btn-outline{ background:transparent; color:var(--gold); border:1px solid var(--gold); }
 .menu-card{ background:rgba(198,142,5,0.08); border:1px solid rgba(198,142,5,0.5); }
+.nudge{
+margin-top:12px;
+font-size:11px;
+font-weight:600;
+color:var(--gold);
+letter-spacing:.3px;
+opacity:0;
+animation:nudgeIn .6s ease-out 1.6s forwards;
+}
+@keyframes nudgeIn{ to{ opacity:1; } }
 footer{ text-align:center; padding:30px 24px 40px; border-top:1px solid rgba(255,255,255,0.08); margin-top:10px; }
 footer .addr{ font-size:12px; color:var(--gray); line-height:1.8; margin-bottom:14px; }
 .social{ display:flex; justify-content:center; gap:16px; margin-bottom:16px; }
@@ -151,7 +161,7 @@ tipOut .5s ease-in 5.5s forwards;
 @keyframes tipOut{ to{ opacity:0; transform:translateY(6px) scale(0.95); } }
 
 @media (prefers-reduced-motion: reduce){
-[data-animate], [data-animate].in-view, .card, .card:hover, .icon, .review-cta, .review-tip{
+[data-animate], [data-animate].in-view, .card, .card:hover, .icon, .review-cta, .review-tip, .nudge{
 animation:none !important; transition:none !important; opacity:1 !important; transform:none !important;
 }
 }
@@ -181,8 +191,8 @@ animation:none !important; transition:none !important; opacity:1 !important; tra
 <h2>Google</h2>
 <div class="stars">★★★★★</div>
 <p>
-<span class="sv">Tack för ditt besök hos SPOT! Din åsikt betyder allt för oss — dela gärna din upplevelse på Google.</span>
-<span class="en">Thank you for dining with us! Your feedback means the world — please share your experience on Google.</span>
+<span class="sv">Vi hoppas du njöt av middagen lika mycket som vi njöt av att laga den! Ett litet ord från dig gör vår dag — och hjälper andra hitta oss.</span>
+<span class="en">We hope you enjoyed your meal as much as we enjoyed making it! A quick word from you makes our day — and helps other guests find us.</span>
 </p>
 <div class="btn-row">
 <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.google.com/maps?cid=16846866423105092212">
@@ -196,6 +206,7 @@ animation:none !important; transition:none !important; opacity:1 !important; tra
 <span class="sv">👉 Tryck här för att lämna en recension!</span>
 <span class="en">👉 Tap here to leave a review!</span>
 </div>
+<div class="nudge"><span class="sv">Tar bara 30 sekunder ✨</span><span class="en">Takes just 30 seconds ✨</span></div>
 </div>
 
 <div class="card" data-animate>
@@ -205,8 +216,8 @@ animation:none !important; transition:none !important; opacity:1 !important; tra
 <h2>TripAdvisor</h2>
 <div class="stars">★★★★★</div>
 <p>
-<span class="sv">Tack för ditt besök hos SPOT! Hjälp andra matälskare hitta oss — dela din upplevelse på TripAdvisor.</span>
-<span class="en">Thank you for dining with us! Help fellow foodies find us — share your experience on TripAdvisor.</span>
+<span class="sv">Var allt som du hoppades på? Berätta för nästa gäst! Dina ord hjälper matälskare i hela världen hitta oss.</span>
+<span class="en">Was everything you hoped for? Tell the next guest! Your words help fellow foodies around the world find us.</span>
 </p>
 <div class="btn-row">
 <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html">
@@ -216,6 +227,7 @@ animation:none !important; transition:none !important; opacity:1 !important; tra
 <span class="sv">Skriv recension</span><span class="en">Write a Review</span>
 </a>
 </div>
+<div class="nudge"><span class="sv">Tar bara 30 sekunder ✨</span><span class="en">Takes just 30 seconds ✨</span></div>
 </div>
 
 <div class="card menu-card" data-animate>
