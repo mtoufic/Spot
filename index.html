@@ -1,25 +1,567 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPOT Malmö — Recensioner &amp; Meny</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--navy:#0d1b3f;--gold:#c68e05;--cream:#f3efe6;--gray:#a9b1c6}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--navy);font-family:'Open Sans',sans-serif;color:var(--cream);display:flex;justify-content:center}body.lang-sv .en{display:none!important}body.lang-en .sv{display:none!important}.page{width:100%;max-width:480px;min-height:100vh;background:linear-gradient(180deg,var(--navy) 0%,#0a1530 100%);position:relative}.lang-toggle{position:absolute;top:16px;right:16px;display:flex;border:1px solid rgba(198,142,5,.5);border-radius:20px;overflow:hidden;z-index:10}.lang-toggle button{background:transparent;border:0;color:var(--gray);font-size:11px;font-weight:700;letter-spacing:1px;padding:6px 12px;cursor:pointer}.lang-toggle button.active{background:var(--gold);color:var(--navy)}header{text-align:center;padding:48px 24px 24px}.logo{width:100px;height:100px;border-radius:50%;display:block;margin:0 auto 20px;box-shadow:0 6px 18px rgba(0,0,0,.4)}.eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;font-weight:600;margin-bottom:8px}h1{font-size:30px;letter-spacing:6px;font-weight:700;color:#fff;text-transform:uppercase}.subtitle{margin-top:10px;font-size:13px;color:var(--gray);line-height:1.6;padding:0 10px}main{padding:8px 20px 20px;display:flex;flex-direction:column;gap:16px}.card{background:rgba(255,255,255,.04);border:1px solid rgba(198,142,5,.35);border-radius:14px;padding:22px 20px;text-align:center}.icon{width:52px;height:52px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px;font-weight:700;color:var(--navy)}.card h2{font-size:16px;letter-spacing:2px;text-transform:uppercase;color:#fff;font-weight:700;margin-bottom:6px}.card p{font-size:13px;color:var(--gray);margin-bottom:14px;line-height:1.5}.stars{color:var(--gold);font-size:15px;letter-spacing:2px;margin-bottom:10px}.btn-row{display:flex;flex-direction:column;align-items:center;gap:10px}.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;border-radius:30px}.btn-primary{width:100%;max-width:310px;background:var(--gold);color:var(--navy);padding:14px 22px;font-size:12px}.read-link{color:var(--gray);font-size:10px;text-decoration:underline;text-underline-offset:3px}.feedback-link{display:block;margin-top:14px;color:var(--gray);font-size:11px;line-height:1.5;text-decoration:underline;text-underline-offset:3px}.nudge{margin-top:10px;font-size:11px;font-weight:600;color:var(--gold)}.menu-card{background:rgba(198,142,5,.08);border:1px solid rgba(198,142,5,.5)}.menu-card .btn{background:var(--gold);color:var(--navy);padding:10px 18px}footer{text-align:center;padding:30px 24px 40px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px}footer .addr{font-size:12px;color:var(--gray);line-height:1.8;margin-bottom:14px}.social{display:flex;justify-content:center;gap:16px;margin-bottom:16px}.social a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(198,142,5,.5);display:flex;align-items:center;justify-content:center;color:var(--gold);text-decoration:none;font-size:14px}.copyright{font-size:10px;color:var(--gray);opacity:.5;letter-spacing:1px}@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(198,142,5,.55)}50%{box-shadow:0 0 0 10px rgba(198,142,5,0)}}.review-cta{animation:pulseGlow 2.2s ease-in-out 1.4s 3}@media(prefers-reduced-motion:reduce){.review-cta{animation:none}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d1b3f">
+  <title>SPOT Malmo - Recensioner &amp; Meny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0d1b3f;
+      --navy-deep: #09112a;
+      --gold: #c68e05;
+      --gold-soft: rgba(198, 142, 5, 0.18);
+      --cream: #f3efe6;
+      --gray: #a9b1c6;
+      --gray-soft: #d7dceb;
+      --card: rgba(255, 255, 255, 0.05);
+      --card-strong: rgba(255, 255, 255, 0.08);
+      --border: rgba(198, 142, 5, 0.35);
+      --shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      width: 100%;
+      background:
+        radial-gradient(circle at top, rgba(198, 142, 5, 0.14), transparent 36%),
+        linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+      color: var(--cream);
+      font-family: "Open Sans", sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+
+    body.lang-sv .en,
+    body.lang-en .sv {
+      display: none !important;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 760px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 18px 16px 36px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 14px;
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(198, 142, 5, 0.5);
+      border-radius: 999px;
+      background: rgba(9, 17, 42, 0.58);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .lang-toggle button {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--gray-soft);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      line-height: 1;
+      min-width: 58px;
+      padding: 10px 16px;
+      text-transform: uppercase;
+    }
+
+    header {
+      padding: 10px 8px 14px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 104px;
+      height: 104px;
+      display: block;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .eyebrow {
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: #fff;
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      max-width: 34rem;
+      margin: 12px auto 0;
+      color: var(--gray);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    main {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 24px 20px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: linear-gradient(180deg, var(--card-strong) 0%, var(--card) 100%);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .hero-card {
+      padding: 28px 22px;
+    }
+
+    .platform {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .platform-heading {
+      text-align: left;
+    }
+
+    .icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: #fff;
+      color: var(--navy);
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .card h2 {
+      margin: 0;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .stars {
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 16px;
+      letter-spacing: 4px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--gray-soft);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .cta-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      max-width: 340px;
+      margin: 22px auto 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible,
+    .text-link:hover,
+    .text-link:focus-visible,
+    .social a:hover,
+    .social a:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      min-height: 58px;
+      padding: 16px 22px;
+      background: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 14px 30px rgba(198, 142, 5, 0.24);
+    }
+
+    .text-link {
+      align-self: center;
+      color: var(--gray-soft);
+      font-size: 12px;
+      line-height: 1.4;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .feedback-link {
+      font-size: 11px;
+      color: var(--gray);
+    }
+
+    .helper-note {
+      margin-top: 16px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .support-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .secondary-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.035) 100%);
+    }
+
+    .secondary-card .icon {
+      margin: 0 auto 16px;
+    }
+
+    .secondary-card p {
+      max-width: 30rem;
+      margin: 0 auto;
+    }
+
+    .link-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 18px;
+      margin-top: 18px;
+    }
+
+    .link-list a {
+      color: var(--gray-soft);
+      font-size: 12px;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .menu-card {
+      background: linear-gradient(180deg, rgba(198, 142, 5, 0.16) 0%, rgba(255, 255, 255, 0.04) 100%);
+    }
+
+    .menu-card .icon {
+      margin: 0 auto 16px;
+    }
+
+    .menu-card .btn {
+      margin-top: 18px;
+      min-height: 48px;
+      padding: 12px 20px;
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    footer {
+      margin-top: 20px;
+      padding: 26px 8px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .addr {
+      color: var(--gray);
+      font-size: 13px;
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .social {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .social a {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(198, 142, 5, 0.55);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .copyright {
+      color: var(--gray);
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      opacity: 0.6;
+    }
+
+    @keyframes pulseGlow {
+      0%,
+      100% {
+        box-shadow: 0 14px 30px rgba(198, 142, 5, 0.24);
+      }
+
+      50% {
+        box-shadow: 0 18px 36px rgba(198, 142, 5, 0.38);
+      }
+    }
+
+    .review-cta {
+      animation: pulseGlow 2.2s ease-in-out 1.2s 3;
+    }
+
+    @media (min-width: 680px) {
+      .page {
+        padding: 24px 22px 42px;
+      }
+
+      .hero-card {
+        padding: 34px 30px;
+      }
+
+      .support-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        padding: 28px 24px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .page {
+        padding-inline: 14px;
+      }
+
+      h1 {
+        font-size: 30px;
+        letter-spacing: 5px;
+      }
+
+      .platform {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .platform-heading {
+        text-align: center;
+      }
+
+      .btn-primary {
+        min-height: 54px;
+        font-size: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn,
+      .text-link,
+      .social a {
+        transition: none;
+      }
+
+      .review-cta {
+        animation: none;
+      }
+    }
+  </style>
 </head>
 <body class="lang-sv">
-<div class="page">
-<div class="lang-toggle"><button type="button" class="active" data-lang="sv" onclick="setLang('sv')">SV</button><button type="button" data-lang="en" onclick="setLang('en')">EN</button></div>
-<header><img class="logo" src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png" alt="SPOT logo"><div class="eyebrow"><span class="sv">Restaurang</span><span class="en">Restaurant</span></div><h1>SPOT</h1><p class="subtitle"><span class="sv">Vedugnsbakad pizza &amp; italienskt kök i hjärtat av Malmö</span><span class="en">Wood-fired pizza &amp; Italian cuisine in the heart of Malmö</span></p></header>
-<main>
-<div class="card"><div class="icon">G</div><h2>Google</h2><div class="stars" aria-label="Decorative stars">★★★★★</div><p><span class="sv">Vi hoppas du njöt av middagen lika mycket som vi njöt av att laga den! Ett litet ord från dig gör vår dag — och hjälper andra hitta oss.</span><span class="en">We hope you enjoyed your meal as much as we enjoyed making it! A quick word from you makes our day — and helps other guests find us.</span></p><div class="btn-row"><a class="btn btn-primary review-cta" target="_blank" rel="noopener" href="https://search.google.com/local/writereview?placeid=ChIJ8yZhcf2jU0YRdHqi18AXzOk"><span class="sv">Skriv recension</span><span class="en">Write a Review</span></a><a class="read-link" target="_blank" rel="noopener" href="https://www.google.com/maps?cid=16846866423105092212"><span class="sv">Läs recensioner</span><span class="en">Read Reviews</span></a></div><a class="feedback-link" href="mailto:info@spotrestaurang.se?subject=Private%20feedback%20for%20SPOT"><span class="sv">Var något inte som det skulle? Berätta för oss →</span><span class="en">Something wasn't quite right? Tell us directly →</span></a><div class="nudge"><span class="sv">Tar bara 30 sekunder ✨</span><span class="en">Takes just 30 seconds ✨</span></div></div>
-<div class="card"><div class="icon">TA</div><h2>TripAdvisor</h2><div class="stars" aria-label="Decorative stars">★★★★★</div><p><span class="sv">Var allt som du hoppades på? Berätta för nästa gäst! Dina ord hjälper matälskare i hela världen hitta oss.</span><span class="en">Was everything you hoped for? Tell the next guest! Your words help fellow foodies around the world find us.</span></p><div class="btn-row"><a class="btn btn-primary review-cta" target="_blank" rel="noopener" href="https://www.tripadvisor.com/UserReviewEdit-g189839-d947846-Spot-Malmo_Skane_County.html"><span class="sv">Skriv recension</span><span class="en">Write a Review</span></a><a class="read-link" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html"><span class="sv">Läs recensioner</span><span class="en">Read Reviews</span></a></div><a class="feedback-link" href="mailto:info@spotrestaurang.se?subject=Private%20feedback%20for%20SPOT"><span class="sv">Var något inte som det skulle? Berätta för oss →</span><span class="en">Something wasn't quite right? Tell us directly →</span></a><div class="nudge"><span class="sv">Tar bara 30 sekunder ✨</span><span class="en">Takes just 30 seconds ✨</span></div></div>
-<div class="card menu-card"><div class="icon">☰</div><h2><span class="sv">Vår Meny</span><span class="en">Our Menu</span></h2><p><span class="sv">Pizza, pasta &amp; italienska klassiker — se hela vår meny innan ditt besök.</span><span class="en">Pizza, pasta &amp; Italian classics — see our full menu before your visit.</span></p><a class="btn" target="_blank" rel="noopener" href="https://restaurangspotmalmo.se/meny/"><span class="sv">Visa meny</span><span class="en">View Menu</span></a></div>
-</main>
-<footer><div class="addr">Stora Nygatan 33, 211 37 Malmö<br>040-12 02 03 · info@spotrestaurang.se</div><div class="social"><a href="https://www.instagram.com/restaurangspot/" title="Instagram" target="_blank" rel="noopener">IG</a><a href="https://www.facebook.com/RestaurangSpot" title="Facebook" target="_blank" rel="noopener">FB</a></div><div class="copyright">© Spot i Malmö AB</div></footer>
-</div>
-<script>function setLang(lang){document.body.className='lang-'+lang;document.documentElement.lang=lang;document.querySelectorAll('.lang-toggle button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-lang')===lang)})}</script>
-</body></html>
+  <div class="page">
+    <div class="topbar">
+      <div class="lang-toggle">
+        <button type="button" aria-label="Switch language" onclick="toggleLang()">
+          <span class="sv">EN</span>
+          <span class="en">SV</span>
+        </button>
+      </div>
+    </div>
+
+    <header>
+      <img
+        class="logo"
+        src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
+        alt="SPOT logo"
+      >
+      <div class="eyebrow">
+        <span class="sv">Restaurang</span>
+        <span class="en">Restaurant</span>
+      </div>
+      <h1>SPOT</h1>
+      <p class="subtitle">
+        <span class="sv">Vedugnsbakad pizza &amp; italienskt kok i hjartat av Malmo.</span>
+        <span class="en">Wood-fired pizza &amp; Italian cuisine in the heart of Malmo.</span>
+      </p>
+    </header>
+
+    <main>
+      <section class="card hero-card">
+        <div class="platform">
+          <div class="icon" aria-hidden="true">G</div>
+          <div class="platform-heading">
+            <div class="eyebrow">
+              <span class="sv">Dela din upplevelse</span>
+              <span class="en">Share your visit</span>
+            </div>
+            <h2>Google</h2>
+          </div>
+        </div>
+        <div class="stars" aria-label="Decorative stars">★★★★★</div>
+        <p>
+          <span class="sv">Gillade du ditt besok hos oss? Ett snabbt omdome pa Google hjalper nya gaster hitta SPOT och gor stor skillnad for oss.</span>
+          <span class="en">Enjoyed your visit? A quick Google review helps new guests discover SPOT and makes a real difference for our team.</span>
+        </p>
+        <div class="cta-stack">
+          <a
+            class="btn btn-primary review-cta"
+            target="_blank"
+            rel="noopener"
+            href="https://search.google.com/local/writereview?placeid=ChIJ8yZhcf2jU0YRdHqi18AXzOk"
+          >
+            <span class="sv">Skriv recension</span>
+            <span class="en">Write a Review</span>
+          </a>
+          <a
+            class="text-link"
+            target="_blank"
+            rel="noopener"
+            href="https://www.google.com/maps?cid=16846866423105092212"
+          >
+            <span class="sv">Las recensioner</span>
+            <span class="en">Read Reviews</span>
+          </a>
+          <a class="text-link feedback-link" href="mailto:info@spotrestaurang.se">
+            <span class="sv">Privat feedback</span>
+            <span class="en">Private feedback</span>
+          </a>
+        </div>
+        <p class="helper-note">
+          <span class="sv">Tar bara runt 30 sekunder.</span>
+          <span class="en">Takes about 30 seconds.</span>
+        </p>
+      </section>
+
+      <div class="support-grid">
+        <section class="card secondary-card">
+          <div class="icon" aria-hidden="true">TA</div>
+          <h2>TripAdvisor</h2>
+          <p>
+            <span class="sv">Foredrar du TripAdvisor? Du kan fortfarande skriva eller lasa recensioner dar ocksa.</span>
+            <span class="en">Prefer TripAdvisor? You can still write or read reviews there as well.</span>
+          </p>
+          <div class="link-list">
+            <a
+              target="_blank"
+              rel="noopener"
+              href="https://www.tripadvisor.com/UserReviewEdit-g189839-d947846-Spot-Malmo_Skane_County.html"
+            >
+              <span class="sv">Skriv recension</span>
+              <span class="en">Write a Review</span>
+            </a>
+            <a
+              target="_blank"
+              rel="noopener"
+              href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html"
+            >
+              <span class="sv">Las recensioner</span>
+              <span class="en">Read Reviews</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="card menu-card">
+          <div class="icon" aria-hidden="true">☰</div>
+          <h2>
+            <span class="sv">Var meny</span>
+            <span class="en">Our Menu</span>
+          </h2>
+          <p>
+            <span class="sv">Pizza, pasta och italienska favoriter. Ta en titt innan ditt nasta besok.</span>
+            <span class="en">Pizza, pasta, and Italian favorites. Have a look before your next visit.</span>
+          </p>
+          <a class="btn" target="_blank" rel="noopener" href="https://restaurangspotmalmo.se/meny/">
+            <span class="sv">Visa meny</span>
+            <span class="en">View Menu</span>
+          </a>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="addr">Stora Nygatan 33, 211 37 Malmo<br>040-12 02 03 · info@spotrestaurang.se</div>
+      <div class="social">
+        <a href="https://www.instagram.com/restaurangspot/" title="Instagram" target="_blank" rel="noopener">IG</a>
+        <a href="https://www.facebook.com/RestaurangSpot" title="Facebook" target="_blank" rel="noopener">FB</a>
+      </div>
+      <div class="copyright">© Spot i Malmo AB</div>
+    </footer>
+  </div>
+
+  <script>
+    function setLang(lang) {
+      document.body.classList.remove("lang-sv", "lang-en");
+      document.body.classList.add("lang-" + lang);
+      document.documentElement.lang = lang;
+    }
+
+    function toggleLang() {
+      setLang(document.body.classList.contains("lang-sv") ? "en" : "sv");
+    }
+  </script>
+</body>
+</html>
