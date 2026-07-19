@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    if (window.matchMedia && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.documentElement.classList.add("motion-safe");
+    }
+  </script>
   <style>
     :root {
       --navy: #0d1b3f;
@@ -25,23 +30,26 @@
 
     * {
       box-sizing: border-box;
-    }
-
-    html,
-    body {
       margin: 0;
+      padding: 0;
+    }
+
+    html {
       min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(198, 142, 5, 0.14), transparent 36%),
+        linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
     }
 
     body {
-      width: 100%;
+      min-height: 100vh;
       background:
         radial-gradient(circle at top, rgba(198, 142, 5, 0.14), transparent 36%),
         linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
       color: var(--cream);
-      font-family: "Open Sans", sans-serif;
       display: flex;
       justify-content: center;
+      font-family: "Open Sans", sans-serif;
     }
 
     body.lang-sv .en,
@@ -49,76 +57,66 @@
       display: none !important;
     }
 
-    a {
-      color: inherit;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
     .page {
       width: 100%;
-      max-width: 760px;
+      max-width: 480px;
       min-height: 100vh;
-      margin: 0 auto;
-      padding: 18px 16px 36px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 14px;
+      position: relative;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
     }
 
     .lang-toggle {
-      display: inline-flex;
-      align-items: center;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      overflow: hidden;
+      z-index: 10;
       border: 1px solid rgba(198, 142, 5, 0.5);
-      border-radius: 999px;
+      border-radius: 20px;
       background: rgba(9, 17, 42, 0.58);
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
     }
 
     .lang-toggle button {
-      appearance: none;
+      min-width: 42px;
       border: 0;
       background: transparent;
       color: var(--gray-soft);
       cursor: pointer;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1.6px;
+      letter-spacing: 1px;
       line-height: 1;
-      min-width: 58px;
-      padding: 10px 16px;
+      padding: 8px 12px;
+      text-align: center;
       text-transform: uppercase;
     }
 
+    .lang-toggle button.active {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
     header {
-      padding: 10px 8px 14px;
+      padding: 56px 24px 30px;
       text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .logo {
       width: 104px;
       height: 104px;
       display: block;
-      margin: 0 auto 18px;
+      margin: 0 auto 20px;
       border-radius: 50%;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      transform: translate3d(0, 0, 0);
     }
 
     .eyebrow {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       color: var(--gold);
       font-size: 11px;
       font-weight: 700;
@@ -127,212 +125,137 @@
     }
 
     h1 {
-      margin: 0;
       color: #fff;
-      font-size: 34px;
+      font-size: clamp(2rem, 8vw, 2.35rem);
       font-weight: 700;
       letter-spacing: 7px;
+      line-height: 1.05;
       text-transform: uppercase;
     }
 
     .subtitle {
-      max-width: 34rem;
+      max-width: 320px;
       margin: 12px auto 0;
       color: var(--gray);
       font-size: 14px;
-      line-height: 1.65;
+      line-height: 1.75;
     }
 
     main {
-      display: grid;
-      gap: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 32px 20px 24px;
     }
 
     .card {
       position: relative;
-      overflow: hidden;
       isolation: isolate;
-      padding: 24px 20px;
       border: 1px solid var(--border);
-      border-radius: 24px;
+      border-radius: 18px;
       background: linear-gradient(180deg, var(--card-strong) 0%, var(--card) 100%);
       box-shadow: var(--shadow);
+      padding: 26px 20px 24px;
       text-align: center;
-      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
-    }
-
-    .hero-card {
-      padding: 28px 22px;
+      transform: translate3d(0, 0, 0);
+      transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+      overflow: hidden;
     }
 
     .card::before,
     .card::after {
       content: "";
       position: absolute;
+      border-radius: inherit;
       pointer-events: none;
-      z-index: 0;
     }
 
     .card::before {
       inset: auto -15% -38% 40%;
       height: 180px;
       background: radial-gradient(circle, rgba(198, 142, 5, 0.2) 0%, rgba(198, 142, 5, 0) 72%);
-      filter: blur(6px);
+      filter: blur(8px);
+      z-index: -2;
     }
 
     .card::after {
-      top: -45%;
-      left: -55%;
-      width: 44%;
-      height: 190%;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
-      transform: rotate(18deg);
-      opacity: 0;
-      transition: opacity 280ms ease, transform 280ms ease;
-    }
-
-    .card:hover,
-    .card:focus-within {
-      transform: translateY(-4px);
-      border-color: rgba(198, 142, 5, 0.56);
-      box-shadow: 0 26px 54px rgba(0, 0, 0, 0.32);
-    }
-
-    .card:hover::after,
-    .card:focus-within::after {
-      opacity: 0.65;
-      transform: translateX(180%) rotate(18deg);
-    }
-
-    .platform {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .platform-heading {
-      text-align: left;
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand-badge {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 auto;
-      margin: 0 auto 18px;
-      border-radius: 50%;
-      z-index: 1;
-    }
-
-    .brand-badge::before,
-    .brand-badge::after {
-      content: "";
-      position: absolute;
       inset: 0;
-      border-radius: inherit;
-      pointer-events: none;
+      box-shadow: 0 26px 42px rgba(0, 0, 0, 0.34);
+      opacity: 0;
+      transform: translate3d(0, 10px, 0) scale(0.985);
+      transition: opacity 260ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: -1;
     }
 
-    .brand-badge::before {
-      inset: -12px;
-      background: radial-gradient(circle, rgba(198, 142, 5, 0.22) 0%, rgba(198, 142, 5, 0) 72%);
-      filter: blur(12px);
-      animation: haloPulse 4.4s ease-in-out infinite;
-    }
-
-    .brand-badge::after {
-      inset: -8px;
-      border: 1px solid rgba(198, 142, 5, 0.28);
-      opacity: 0.95;
-      animation: orbitRing 10s linear infinite;
-    }
-
-    .brand-badge img {
-      position: relative;
-      z-index: 1;
-      display: block;
-      max-width: 100%;
-      max-height: 100%;
-      animation: logoFloat 5.6s ease-in-out infinite;
-    }
-
-    .brand-badge--google,
-    .brand-badge--tripadvisor {
-      width: 94px;
-      height: 94px;
+    .icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      border: 1px solid rgba(198, 142, 5, 0.2);
+      border-radius: 50%;
       background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+      transform: translate3d(0, 0, 0);
     }
 
-    .brand-badge--google img {
-      width: 52px;
-      height: 52px;
+    .icon svg {
+      display: block;
+      width: 28px;
+      height: 28px;
     }
 
-    .brand-badge--tripadvisor img {
-      width: 72px;
-      height: 72px;
+    .icon-google svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .icon-tripadvisor svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .menu-logo {
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
-    }
-
-    .brand-badge--menu {
-      width: 96px;
-      height: 96px;
-      background: radial-gradient(circle at 34% 28%, #173777 0%, #102760 56%, #0b1c44 100%);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
-    }
-
-    .brand-badge--menu::after {
-      inset: -7px;
-      border: 1px solid rgba(198, 142, 5, 0.42);
-    }
-
-    .brand-badge--menu img {
-      width: 74px;
-      height: 74px;
-      border-radius: 50%;
-      box-shadow: 0 0 0 2px rgba(198, 142, 5, 0.2);
+      object-fit: cover;
+      display: block;
     }
 
     .card h2 {
-      margin: 0;
+      margin-bottom: 8px;
       color: #fff;
       font-size: 20px;
       font-weight: 700;
       letter-spacing: 1.8px;
       text-transform: uppercase;
-      position: relative;
-      z-index: 1;
-    }
-
-    .stars {
-      margin-bottom: 12px;
-      color: var(--gold);
-      font-size: 16px;
-      letter-spacing: 4px;
     }
 
     .card p {
-      margin: 0;
+      margin-bottom: 18px;
       color: var(--gray-soft);
       font-size: 14px;
       line-height: 1.7;
-      position: relative;
-      z-index: 1;
     }
 
-    .cta-stack {
+    .stars-note {
+      margin-bottom: 12px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+    }
+
+    .btn-row {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
       gap: 12px;
-      max-width: 340px;
-      margin: 22px auto 0;
     }
 
     .btn {
@@ -345,151 +268,141 @@
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      position: relative;
-      z-index: 1;
-      transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease, filter 160ms ease;
-    }
-
-    .btn:hover,
-    .btn:focus-visible,
-    .text-link:hover,
-    .text-link:focus-visible,
-    .social a:hover,
-    .social a:focus-visible {
-      transform: translateY(-1px);
     }
 
     .btn-primary {
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      max-width: 320px;
       min-height: 58px;
       padding: 16px 22px;
       background: var(--gold);
-      color: var(--navy);
       box-shadow: 0 14px 30px rgba(198, 142, 5, 0.24);
+      color: var(--navy);
+      transform: translate3d(0, 0, 0);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+      will-change: transform;
     }
 
-    .btn-primary:hover,
-    .btn-primary:focus-visible {
-      filter: brightness(1.04);
-      box-shadow: 0 18px 34px rgba(198, 142, 5, 0.3);
+    .btn-primary::before,
+    .btn-primary::after,
+    .menu-card .btn::after {
+      content: "";
+      position: absolute;
+      border-radius: inherit;
+      pointer-events: none;
     }
 
-    .text-link {
-      align-self: center;
+    .btn-primary::before {
+      inset: -8px;
+      background: radial-gradient(circle at center, rgba(198, 142, 5, 0.28), rgba(198, 142, 5, 0) 72%);
+      opacity: 0;
+      transform: translate3d(0, 0, 0) scale(0.94);
+      z-index: -2;
+    }
+
+    .btn-primary::after,
+    .menu-card .btn::after {
+      inset: 0;
+      box-shadow: 0 20px 28px rgba(198, 142, 5, 0.24);
+      opacity: 0;
+      transform: translate3d(0, 8px, 0) scale(0.985);
+      transition: opacity 220ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: -1;
+    }
+
+    .read-link {
       color: var(--gray-soft);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.4;
       text-decoration: underline;
-      text-underline-offset: 4px;
-      position: relative;
-      z-index: 1;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
     }
 
     .feedback-link {
-      font-size: 11px;
+      display: block;
+      max-width: 270px;
+      margin: 14px auto 0;
       color: var(--gray);
+      font-size: 11px;
+      line-height: 1.6;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
     }
 
-    .helper-note {
-      margin-top: 16px;
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .support-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .secondary-card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.035) 100%);
-    }
-
-    .secondary-card .icon {
-      margin: 0 auto 16px;
-    }
-
-    .secondary-card p {
-      max-width: 30rem;
-      margin: 0 auto;
-    }
-
-    .secondary-card .cta-stack {
-      max-width: 310px;
-      margin-top: 20px;
-    }
-
-    .brand-wordmark-shell {
+    .nudge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .sparkle {
       position: relative;
-      z-index: 1;
-      margin: 0 auto 18px;
-      padding: 12px 20px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+      width: 14px;
+      height: 14px;
+      flex: 0 0 14px;
+      transform: translate3d(0, 0, 0);
     }
 
-    .brand-wordmark {
-      display: block;
-      max-width: 100%;
-      height: auto;
+    .sparkle::before,
+    .sparkle::after {
+      content: "✦";
+      position: absolute;
+      inset: 0;
+      color: currentColor;
+      font-size: 11px;
+      line-height: 1;
+      opacity: 0.16;
+      transform-origin: center;
     }
 
-    .brand-wordmark--tripadvisor {
-      width: 168px;
+    .sparkle::before {
+      animation: sparklePrimary 2.8s ease-in-out infinite;
     }
 
-    .link-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px 18px;
-      margin-top: 18px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .link-list a {
-      color: var(--gray-soft);
-      font-size: 12px;
-      text-decoration: underline;
-      text-underline-offset: 4px;
+    .sparkle::after {
+      inset: auto -2px -1px auto;
+      font-size: 8px;
+      animation: sparkleSecondary 3.4s ease-in-out infinite 0.35s;
     }
 
     .menu-card {
       background: linear-gradient(180deg, rgba(198, 142, 5, 0.16) 0%, rgba(255, 255, 255, 0.04) 100%);
     }
 
-    .menu-card .icon {
-      margin: 0 auto 16px;
-    }
-
     .menu-card .btn {
+      position: relative;
+      isolation: isolate;
       margin-top: 18px;
       min-height: 48px;
       padding: 12px 20px;
       background: var(--gold);
       color: var(--navy);
+      transform: translate3d(0, 0, 0);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+      will-change: transform;
     }
 
     footer {
-      margin-top: 20px;
-      padding: 26px 8px 0;
+      margin-top: 10px;
+      padding: 32px 24px 44px;
       text-align: center;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .addr {
+      margin-bottom: 16px;
       color: var(--gray);
       font-size: 13px;
       line-height: 1.9;
-      margin-bottom: 16px;
     }
 
     .social {
@@ -505,12 +418,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
       border: 1px solid rgba(198, 142, 5, 0.55);
+      border-radius: 50%;
       color: var(--gold);
-      text-decoration: none;
       font-size: 14px;
       font-weight: 700;
+      text-decoration: none;
+      transform: translate3d(0, 0, 0);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
     }
 
     .copyright {
@@ -520,245 +435,178 @@
       opacity: 0.6;
     }
 
-    .reveal {
+    html.motion-safe [data-reveal] {
       opacity: 0;
-      transform: translateY(22px) scale(0.985);
-      animation: riseIn 760ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      transform: translate3d(0, 22px, 0);
+      transition:
+        opacity 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        transform 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
     }
 
-    .reveal-1 {
-      animation-delay: 60ms;
+    html.motion-safe [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
 
-    .reveal-2 {
-      animation-delay: 140ms;
+    @keyframes ctaIdlePulse {
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      28% {
+        transform: translate3d(0, -1px, 0) scale(1.014);
+      }
+
+      58% {
+        transform: translate3d(0, 0, 0) scale(1.024);
+      }
     }
 
-    .reveal-3 {
-      animation-delay: 230ms;
-    }
-
-    .reveal-4 {
-      animation-delay: 320ms;
-    }
-
-    .reveal-5 {
-      animation-delay: 410ms;
-    }
-
-    .motion-copy {
-      animation: copyFloat 6.2s ease-in-out infinite;
-    }
-
-    .motion-heading {
-      animation: headingFloat 5.8s ease-in-out infinite;
-    }
-
-    .motion-wordmark {
-      animation: wordmarkFloat 6.4s ease-in-out infinite;
-    }
-
-    .motion-note {
-      animation: noteGlow 4.8s ease-in-out infinite;
-    }
-
-    @keyframes riseIn {
-      from {
+    @keyframes ctaIdleAura {
+      0%,
+      100% {
         opacity: 0;
-        transform: translateY(22px) scale(0.985);
+        transform: translate3d(0, 0, 0) scale(0.94);
       }
 
-      to {
+      38% {
+        opacity: 0.8;
+        transform: translate3d(0, 0, 0) scale(1.02);
+      }
+
+      70% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(1.08);
+      }
+    }
+
+    @keyframes sparklePrimary {
+      0%,
+      100% {
+        opacity: 0.14;
+        transform: translate3d(0, 0, 0) scale(0.68) rotate(0deg);
+      }
+
+      36% {
+        opacity: 0.42;
+        transform: translate3d(0, -2px, 0) scale(1) rotate(10deg);
+      }
+
+      72% {
+        opacity: 0.18;
+        transform: translate3d(1px, 1px, 0) scale(0.78) rotate(-8deg);
+      }
+    }
+
+    @keyframes sparkleSecondary {
+      0%,
+      100% {
+        opacity: 0.08;
+        transform: translate3d(0, 0, 0) scale(0.5) rotate(0deg);
+      }
+
+      42% {
+        opacity: 0.3;
+        transform: translate3d(1px, -1px, 0) scale(0.88) rotate(-14deg);
+      }
+
+      76% {
+        opacity: 0.12;
+        transform: translate3d(-1px, 1px, 0) scale(0.62) rotate(12deg);
+      }
+    }
+
+    .review-cta.idle-pulse {
+      animation: ctaIdlePulse 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .review-cta.idle-pulse::before {
+      animation: ctaIdleAura 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .card:hover,
+      .card:focus-within {
+        transform: translate3d(0, -6px, 0);
+      }
+
+      .card:hover::after,
+      .card:focus-within::after {
         opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes logoFloat {
-      0%,
-      100% {
-        transform: translateY(0) scale(1);
+        transform: translate3d(0, 0, 0) scale(1);
       }
 
-      50% {
-        transform: translateY(-6px) scale(1.02);
-      }
-    }
-
-    @keyframes haloPulse {
-      0%,
-      100% {
-        opacity: 0.6;
-        transform: scale(0.98);
+      .btn-primary:hover,
+      .btn-primary:focus-visible,
+      .menu-card .btn:hover,
+      .menu-card .btn:focus-visible,
+      .social a:hover,
+      .social a:focus-visible {
+        transform: translate3d(0, -3px, 0);
       }
 
-      50% {
+      .btn-primary:hover::after,
+      .btn-primary:focus-visible::after,
+      .menu-card .btn:hover::after,
+      .menu-card .btn:focus-visible::after {
         opacity: 1;
-        transform: scale(1.05);
+        transform: translate3d(0, 0, 0) scale(1);
       }
     }
 
-    @keyframes orbitRing {
-      from {
-        transform: rotate(0deg) scale(1);
+    @media (max-width: 380px) {
+      .lang-toggle {
+        top: 12px;
+        right: 12px;
       }
 
-      50% {
-        transform: rotate(180deg) scale(1.03);
-      }
-
-      to {
-        transform: rotate(360deg) scale(1);
-      }
-    }
-
-    @keyframes copyFloat {
-      0%,
-      100% {
-        transform: translateY(0);
-        opacity: 0.88;
-      }
-
-      50% {
-        transform: translateY(-3px);
-        opacity: 1;
-      }
-    }
-
-    @keyframes headingFloat {
-      0%,
-      100% {
-        transform: translateY(0);
-        text-shadow: 0 0 0 rgba(198, 142, 5, 0);
-      }
-
-      50% {
-        transform: translateY(-4px);
-        text-shadow: 0 8px 18px rgba(198, 142, 5, 0.16);
-      }
-    }
-
-    @keyframes wordmarkFloat {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-4px);
-      }
-    }
-
-    @keyframes noteGlow {
-      0%,
-      100% {
-        opacity: 0.9;
-      }
-
-      50% {
-        opacity: 1;
-        text-shadow: 0 0 18px rgba(198, 142, 5, 0.22);
-      }
-    }
-
-    @keyframes pulseGlow {
-      0%,
-      100% {
-        box-shadow: 0 14px 30px rgba(198, 142, 5, 0.24);
-      }
-
-      50% {
-        box-shadow: 0 18px 36px rgba(198, 142, 5, 0.38);
-      }
-    }
-
-    .review-cta {
-      animation: pulseGlow 2.2s ease-in-out 1.2s 3;
-    }
-
-    @media (min-width: 680px) {
-      .page {
-        padding: 24px 22px 42px;
-      }
-
-      .hero-card {
-        padding: 34px 30px;
-      }
-
-      .support-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .card {
-        padding: 28px 24px;
-      }
-    }
-
-    @media (max-width: 420px) {
-      .page {
-        padding-inline: 14px;
+      header {
+        padding: 52px 18px 26px;
       }
 
       h1 {
-        font-size: 30px;
         letter-spacing: 5px;
       }
 
-      .platform {
-        flex-direction: column;
-        gap: 10px;
+      main {
+        gap: 18px;
+        padding: 24px 16px 20px;
       }
 
-      .platform-heading {
-        text-align: center;
-      }
-
-      .brand-badge--google,
-      .brand-badge--tripadvisor,
-      .brand-badge--menu {
-        width: 88px;
-        height: 88px;
-      }
-
-      .brand-badge--tripadvisor img {
-        width: 68px;
-        height: 68px;
-      }
-
-      .brand-wordmark--tripadvisor {
-        width: 150px;
+      .card {
+        padding: 22px 16px;
       }
 
       .btn-primary {
-        min-height: 54px;
+        padding: 15px 18px;
         font-size: 11px;
+      }
+
+      footer {
+        padding: 28px 18px 40px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .btn,
-      .text-link,
+      .card,
+      .btn-primary,
+      .menu-card .btn,
       .social a {
         transition: none;
       }
 
-      .card,
-      .card::before,
-      .card::after,
-      .reveal,
-      .motion-copy,
-      .motion-heading,
-      .motion-wordmark,
-      .motion-note,
-      .brand-badge::before,
-      .brand-badge::after,
-      .brand-badge img,
-      .review-cta {
+      .sparkle::before,
+      .sparkle::after,
+      .review-cta.idle-pulse,
+      .review-cta.idle-pulse::before {
         animation: none;
       }
 
-      .reveal {
-        opacity: 1;
+      .sparkle::before,
+      .sparkle::after {
+        opacity: 0.22;
         transform: none;
       }
     }
@@ -766,157 +614,137 @@
 </head>
 <body class="lang-sv">
   <div class="page">
-    <div class="topbar reveal reveal-1">
-      <div class="lang-toggle">
-        <button type="button" aria-label="Switch language" onclick="toggleLang()">
-          <span class="sv">EN</span>
-          <span class="en">SV</span>
-        </button>
-      </div>
+    <div class="lang-toggle" aria-label="Language switcher" translate="no">
+      <button type="button" class="active" data-lang="sv" aria-pressed="true" onclick="setLang('sv')" translate="no">SV</button>
+      <button type="button" data-lang="en" aria-pressed="false" onclick="setLang('en')" translate="no">EN</button>
     </div>
 
-    <header class="reveal reveal-1">
+    <header>
       <img
+        data-reveal
+        style="--reveal-delay: 80ms;"
         class="logo"
         src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
         alt="SPOT logo"
+        translate="no"
       >
-      <div class="eyebrow">
+      <div class="eyebrow" data-reveal style="--reveal-delay: 140ms;">
         <span class="sv">Restaurang</span>
         <span class="en">Restaurant</span>
       </div>
-      <h1 class="motion-heading">SPOT</h1>
-      <p class="subtitle">
+      <h1 data-reveal style="--reveal-delay: 220ms;" lang="en" translate="no">SPOT</h1>
+      <p class="subtitle" data-reveal style="--reveal-delay: 300ms;">
         <span class="sv">Vedugnsbakad pizza &amp; italienskt kok i hjartat av Malmo.</span>
         <span class="en">Wood-fired pizza &amp; Italian cuisine in the heart of Malmo.</span>
       </p>
     </header>
 
     <main>
-      <section class="card hero-card reveal reveal-2">
-        <div class="platform">
-          <div class="brand-badge brand-badge--google" aria-hidden="true">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-              alt=""
-              loading="lazy"
-            >
-          </div>
-          <div class="platform-heading">
-            <div class="eyebrow motion-copy">
-              <span class="sv">Dela din upplevelse</span>
-              <span class="en">Share your visit</span>
-            </div>
-            <h2 class="motion-heading">Google</h2>
-          </div>
+      <div class="card" data-reveal style="--reveal-delay: 380ms;">
+        <div class="icon icon-google" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+            <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.56-5.17 3.56-8.65Z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3c-1.07.72-2.44 1.15-4.07 1.15-3.13 0-5.79-2.11-6.73-4.95H1.26v3.09A12 12 0 0 0 12 24Z"/>
+            <path fill="#FBBC04" d="M5.27 14.3A7.2 7.2 0 0 1 4.89 12c0-.8.14-1.57.38-2.3V6.61H1.26A12 12 0 0 0 0 12c0 1.94.46 3.77 1.26 5.39l4.01-3.09Z"/>
+            <path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.58 1.8l3.43-3.43C17.95 1.14 15.24 0 12 0A12 12 0 0 0 1.26 6.61L5.27 9.7C6.21 6.87 8.87 4.77 12 4.77Z"/>
+          </svg>
         </div>
-        <div class="stars" aria-label="Decorative stars">★★★★★</div>
+        <h2>Google</h2>
+        <div class="stars-note">
+          <span class="sv">Dela din upplevelse</span>
+          <span class="en">Share your visit</span>
+        </div>
         <p>
           <span class="sv">Gillade du ditt besok hos oss? Ett snabbt omdome pa Google hjalper nya gaster hitta SPOT och gor stor skillnad for oss.</span>
           <span class="en">Enjoyed your visit? A quick Google review helps new guests discover SPOT and makes a real difference for our team.</span>
         </p>
-        <div class="cta-stack">
-          <a
-            class="btn btn-primary review-cta"
-            target="_blank"
-            rel="noopener"
-            href="https://search.google.com/local/writereview?placeid=ChIJ8yZhcf2jU0YRdHqi18AXzOk"
-          >
+        <div class="btn-row">
+          <a class="btn btn-primary review-cta" target="_blank" rel="noopener" href="https://search.google.com/local/writereview?placeid=ChIJ8yZhcf2jU0YRdHqi18AXzOk">
             <span class="sv">Skriv recension</span>
             <span class="en">Write a Review</span>
           </a>
-          <a
-            class="text-link"
-            target="_blank"
-            rel="noopener"
-            href="https://www.google.com/maps?cid=16846866423105092212"
-          >
+          <a class="read-link" target="_blank" rel="noopener" href="https://www.google.com/maps?cid=16846866423105092212">
             <span class="sv">Las recensioner</span>
             <span class="en">Read Reviews</span>
           </a>
-          <a class="text-link feedback-link" href="mailto:info@spotrestaurang.se">
-            <span class="sv">Privat feedback</span>
-            <span class="en">Private feedback</span>
+        </div>
+        <a class="feedback-link" href="mailto:info@spotrestaurang.se">
+          <span class="sv">Var nagot inte som det skulle? Beratta for oss →</span>
+          <span class="en">Something wasn't quite right? Tell us directly →</span>
+        </a>
+        <div class="nudge">
+          <span class="sv">Tar bara runt 30 sekunder</span>
+          <span class="en">Takes about 30 seconds</span>
+          <span class="sparkle" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="card" data-reveal style="--reveal-delay: 500ms;">
+        <div class="icon icon-tripadvisor" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+            <path fill="#34E0A1" d="M57.6 20.56h-5.03a21.93 21.93 0 0 0-41.14 0H6.4a3.2 3.2 0 0 0 0 6.4h2.2a13.6 13.6 0 1 0 24.93 8.38 13.58 13.58 0 0 0 24.87-8.38h2.2a3.2 3.2 0 0 0 0-6.4ZM20.27 44.53a9.2 9.2 0 1 1 0-18.4 9.2 9.2 0 0 1 0 18.4Zm23.46 0a9.2 9.2 0 1 1 0-18.4 9.2 9.2 0 0 1 0 18.4Z"/>
+            <circle cx="20.27" cy="35.33" r="6.1" fill="#fff"/>
+            <circle cx="43.73" cy="35.33" r="6.1" fill="#fff"/>
+            <circle cx="20.27" cy="35.33" r="2.75" fill="#000"/>
+            <circle cx="43.73" cy="35.33" r="2.75" fill="#000"/>
+            <path fill="#000" d="M32 27.04a3.84 3.84 0 1 0 0 7.67 3.84 3.84 0 0 0 0-7.67Zm0-17.43c6.88 0 13.05 3.08 17.2 7.95h-2.96A17.78 17.78 0 0 0 32 12.81c-5.46 0-10.35 1.97-14.24 4.75h-2.95A22.02 22.02 0 0 1 32 9.61Z"/>
+          </svg>
+        </div>
+        <h2>TripAdvisor</h2>
+        <div class="stars-note">
+          <span class="sv">Fler satt att rekommendera oss</span>
+          <span class="en">Another way to recommend us</span>
+        </div>
+        <p>
+          <span class="sv">Foredrar du Tripadvisor? Du kan fortfarande skriva eller lasa recensioner dar ocksa.</span>
+          <span class="en">Prefer Tripadvisor? You can still write or read reviews there as well.</span>
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary review-cta" target="_blank" rel="noopener" href="https://www.tripadvisor.com/UserReviewEdit-g189839-d947846-Spot-Malmo_Skane_County.html">
+            <span class="sv">Skriv recension</span>
+            <span class="en">Write a Review</span>
+          </a>
+          <a class="read-link" target="_blank" rel="noopener" href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html">
+            <span class="sv">Las recensioner</span>
+            <span class="en">Read Reviews</span>
           </a>
         </div>
-        <p class="helper-note motion-note">
-          <span class="sv">Tar bara runt 30 sekunder.</span>
-          <span class="en">Takes about 30 seconds.</span>
+        <a class="feedback-link" href="mailto:info@spotrestaurang.se">
+          <span class="sv">Var nagot inte som det skulle? Beratta for oss →</span>
+          <span class="en">Something wasn't quite right? Tell us directly →</span>
+        </a>
+        <div class="nudge">
+          <span class="sv">Tar cirka 40 sekunder</span>
+          <span class="en">Takes about 40 seconds</span>
+          <span class="sparkle" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="card menu-card" data-reveal style="--reveal-delay: 620ms;">
+        <div class="icon" style="border-color: rgba(198, 142, 5, 0.24);">
+          <img
+            class="menu-logo"
+            src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
+            alt="SPOT logo"
+            translate="no"
+          >
+        </div>
+        <h2>
+          <span class="sv">Var meny</span>
+          <span class="en">Our Menu</span>
+        </h2>
+        <p>
+          <span class="sv">Pizza, pasta och italienska favoriter. Ta en titt innan ditt nasta besok.</span>
+          <span class="en">Pizza, pasta, and Italian favorites. Have a look before your next visit.</span>
         </p>
-      </section>
-
-      <div class="support-grid">
-        <section class="card secondary-card reveal reveal-3">
-          <div class="brand-badge brand-badge--tripadvisor" aria-hidden="true">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/94/Tripadvisor-logo-circle-owl-icon-black-green.svg"
-              alt=""
-              loading="lazy"
-            >
-          </div>
-          <div class="brand-wordmark-shell">
-            <img
-              class="brand-wordmark brand-wordmark--tripadvisor motion-wordmark"
-              src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Tripadvisor%202025%20Logo.svg"
-              alt="Tripadvisor"
-              loading="lazy"
-            >
-          </div>
-          <p>
-            <span class="sv">Foredrar du Tripadvisor? Du kan fortfarande skriva eller lasa recensioner dar ocksa.</span>
-            <span class="en">Prefer Tripadvisor? You can still write or read reviews there as well.</span>
-          </p>
-          <div class="cta-stack">
-            <a
-              class="btn btn-primary review-cta"
-              target="_blank"
-              rel="noopener"
-              href="https://www.tripadvisor.com/UserReviewEdit-g189839-d947846-Spot-Malmo_Skane_County.html"
-            >
-              <span class="sv">Skriv recension</span>
-              <span class="en">Write a Review</span>
-            </a>
-            <a
-              class="text-link"
-              target="_blank"
-              rel="noopener"
-              href="https://www.tripadvisor.com/Restaurant_Review-g189839-d947846-Reviews-Spot-Malmo_Skane_County.html"
-            >
-              <span class="sv">Las recensioner</span>
-              <span class="en">Read Reviews</span>
-            </a>
-          </div>
-          <p class="helper-note motion-note">
-            <span class="sv">Tar cirka 40 sekunder.</span>
-            <span class="en">Takes about 40 seconds.</span>
-          </p>
-        </section>
-
-        <section class="card menu-card reveal reveal-4">
-          <div class="brand-badge brand-badge--menu" aria-hidden="true">
-            <img
-              src="https://restaurangspotmalmo.se/wp-content/uploads/2023/06/logo_220x220.png"
-              alt=""
-              loading="lazy"
-            >
-          </div>
-          <h2 class="motion-heading">
-            <span class="sv">Var meny</span>
-            <span class="en">Our Menu</span>
-          </h2>
-          <p>
-            <span class="sv">Pizza, pasta och italienska favoriter. Ta en titt innan ditt nasta besok.</span>
-            <span class="en">Pizza, pasta, and Italian favorites. Have a look before your next visit.</span>
-          </p>
-          <a class="btn" target="_blank" rel="noopener" href="https://restaurangspotmalmo.se/meny/">
-            <span class="sv">Visa meny</span>
-            <span class="en">View Menu</span>
-          </a>
-        </section>
+        <a class="btn" target="_blank" rel="noopener" href="https://restaurangspotmalmo.se/meny/">
+          <span class="sv">Visa meny</span>
+          <span class="en">View Menu</span>
+        </a>
       </div>
     </main>
 
-    <footer class="reveal reveal-5">
+    <footer data-reveal style="--reveal-delay: 120ms;">
       <div class="addr">Stora Nygatan 33, 211 37 Malmo<br>040-12 02 03 · info@spotrestaurang.se</div>
       <div class="social">
         <a href="https://www.instagram.com/restaurangspot/" title="Instagram" target="_blank" rel="noopener">IG</a>
@@ -927,15 +755,139 @@
   </div>
 
   <script>
+    const TITLES = {
+      sv: "SPOT Malmo - Recensioner & Meny",
+      en: "SPOT Malmo - Reviews & Menu"
+    };
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const motionEnabled = !prefersReducedMotion.matches;
+    const revealElements = Array.from(document.querySelectorAll("[data-reveal]"));
+    const reviewButtons = Array.from(document.querySelectorAll(".review-cta"));
+    let idleStartTimer = 0;
+    let idlePulseInterval = 0;
+    let idlePulseCleanup = 0;
+    let reviewPulseDismissed = false;
+
     function setLang(lang) {
+      const nextLang = lang === "en" ? "en" : "sv";
+
       document.body.classList.remove("lang-sv", "lang-en");
-      document.body.classList.add("lang-" + lang);
-      document.documentElement.lang = lang;
+      document.body.classList.add("lang-" + nextLang);
+      document.documentElement.lang = nextLang;
+      document.title = TITLES[nextLang];
+
+      document.querySelectorAll(".sv, .en").forEach(function (element) {
+        const isVisible = element.classList.contains(nextLang);
+        element.hidden = !isVisible;
+        element.setAttribute("aria-hidden", String(!isVisible));
+      });
+
+      document.querySelectorAll(".lang-toggle button").forEach(function (button) {
+        const isActive = button.getAttribute("data-lang") === nextLang;
+        button.textContent = button.getAttribute("data-lang").toUpperCase();
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
     }
 
-    function toggleLang() {
-      setLang(document.body.classList.contains("lang-sv") ? "en" : "sv");
+    function revealAllSections() {
+      revealElements.forEach(function (element) {
+        element.classList.add("is-visible");
+      });
     }
+
+    function initScrollReveal() {
+      if (!motionEnabled || !("IntersectionObserver" in window)) {
+        revealAllSections();
+        return;
+      }
+
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        });
+      }, {
+        threshold: 0.18,
+        rootMargin: "0px 0px -10% 0px"
+      });
+
+      revealElements.forEach(function (element) {
+        revealObserver.observe(element);
+      });
+    }
+
+    function clearIdlePulse() {
+      window.clearTimeout(idleStartTimer);
+      window.clearInterval(idlePulseInterval);
+      window.clearTimeout(idlePulseCleanup);
+      reviewButtons.forEach(function (button) {
+        button.classList.remove("idle-pulse");
+      });
+    }
+
+    function runIdlePulse() {
+      if (!motionEnabled || reviewPulseDismissed) {
+        return;
+      }
+
+      reviewButtons.forEach(function (button) {
+        button.classList.remove("idle-pulse");
+      });
+
+      reviewButtons.forEach(function (button) {
+        button.classList.add("idle-pulse");
+      });
+
+      window.clearTimeout(idlePulseCleanup);
+      idlePulseCleanup = window.setTimeout(function () {
+        reviewButtons.forEach(function (button) {
+          button.classList.remove("idle-pulse");
+        });
+      }, 1700);
+    }
+
+    function scheduleIdlePulse() {
+      if (!motionEnabled || reviewPulseDismissed || !reviewButtons.length) {
+        return;
+      }
+
+      clearIdlePulse();
+      idleStartTimer = window.setTimeout(function () {
+        runIdlePulse();
+        idlePulseInterval = window.setInterval(runIdlePulse, 7000);
+      }, 2000);
+    }
+
+    function dismissIdlePulse() {
+      reviewPulseDismissed = true;
+      clearIdlePulse();
+    }
+
+    setLang(document.documentElement.lang);
+    initScrollReveal();
+    scheduleIdlePulse();
+
+    reviewButtons.forEach(function (button) {
+      button.addEventListener("click", dismissIdlePulse);
+    });
+
+    window.addEventListener("pointerdown", scheduleIdlePulse);
+    window.addEventListener("keydown", scheduleIdlePulse);
+    window.addEventListener("touchstart", scheduleIdlePulse, { passive: true });
+    window.addEventListener("scroll", scheduleIdlePulse, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        clearIdlePulse();
+        return;
+      }
+
+      scheduleIdlePulse();
+    });
   </script>
 </body>
 </html>
